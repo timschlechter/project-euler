@@ -1,6 +1,5 @@
-def toWord(value):
+def lookup(value):
     switcher = {
-        0: "",
         1: "one",
         2: "two",
         3: "three",
@@ -32,45 +31,28 @@ def toWord(value):
     return switcher.get(value, "")
 
 
-def toWords(number):
-    result = toWord(number)
-    if result != "":
-        return result
-
-    text = str(number)    
-
-    hundreds = int(text[len(text)-3]) if number >= 100 else 0
-    thousands = int(text[len(text)-4]) if number >= 1000 else 0
-
-    remaining = number % 100
+def num_to_words(number):
+    result = ""    
+    if number >= 1000:
+        thousands, number = divmod(number % 10000, 1000)
+        result += lookup(thousands) + "thousand"
     
-    if thousands > 0:
-        result += toWord(thousands) + 'thousand'
-
-    if hundreds > 0:
-        result += toWord(hundreds) + 'hundred'
-        if remaining > 0:
-            result += "and"
-
-    if remaining > 0:
-        remaining_result = toWord(remaining)
-        if remaining_result != "":
-            result += remaining_result
-        else:
-            ones = remaining % 10
-            tens = remaining - ones
-
-            if tens > 0:
-                result += toWords(tens)
-            
-            if ones > 0:
-                result += toWord(ones)
+    if number >= 100:
+        hundreds, number = divmod(number % 1000, 100)
+        connector = "and" if number > 0 else ""
+        result += lookup(hundreds) + "hundred" + connector
+    
+    if number < 20:
+        result += lookup(number)
+    else:
+        tens, digits = divmod(number % 100, 10)
+        result += lookup(tens * 10) + lookup(digits)
 
     return result
 
+
 total = 0
 for x in range(1, 1001):
-    print(toWords(x))
-    total += len(toWords(x))
+    total += len(num_to_words(x))
 
 print(total)
