@@ -13,7 +13,6 @@ ROYAL_FLUSH = 10**18
 def card_value(card):
     return int({"T": 10, "J": 11, "Q": 12, "K": 13, "A": 14}.get(card, card))
 
-
 def hand_rank(cards):
     values = list(map(lambda c: card_value(c[0]), cards))
     values.sort()
