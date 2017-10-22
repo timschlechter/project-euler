@@ -1,12 +1,17 @@
-p = list()
-for i in range(0, 10):
-    p.append(i)
+def permutate(items):
+    if len(items) == 2:
+        yield items
+        yield [items[1], items[0]]
+    else:
+        for i in items:
+            other = list(items)
+            other.remove(i)
+            for j in permutate(other):
+                yield [i] + j
 
 
-0123456789
-0123456798
-0123456879
-0123456897
-0123456978
-0123456987
-
+count = 0
+for i in permutate(range(0, 10)):
+    count += 1
+    if count == 1000000:
+        print(i)
