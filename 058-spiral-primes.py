@@ -1,16 +1,4 @@
-def get_corner_nrs(layer):
-    if layer == 0:
-        yield 1
-    else:
-        odd_square = side_len(layer) ** 2
-        yield odd_square
-        yield odd_square - layer * 2
-        yield odd_square - layer * 4
-        yield odd_square - layer * 6
-
-def side_len(layer):
-    return (layer + 1) * 2 - 1
-
+# https://www.daniweb.com/programming/software-development/code/216880/check-if-a-number-is-a-prime-number-python
 def is_prime(n):
     if n < 2:
         return False
@@ -21,19 +9,21 @@ def is_prime(n):
     for x in range(3, int(n**0.5) + 1, 2):
         if n % x == 0:
             return False
-
     return True
 
+side_len = 1
+current = 1
+count = 1
 primes = 0
-nonprimes = 0
+ratio = 1
 
-for layer in range(0, 1000000):
-    for nr in get_corner_nrs(layer):
-        if is_prime(nr):
+while ratio > 0.1:
+    side_len += 2
+    for i in range(0, 4):
+        current += side_len - 1
+        if i != 3 and is_prime(current):
             primes += 1
-        else:
-            nonprimes += 1
-            ratio = primes / (primes + nonprimes) * 100
-    if ratio < 10 and layer > 1:
-        print(side_len(layer))
-        break
+    count += 4
+    ratio = primes / count    
+
+print(side_len)
