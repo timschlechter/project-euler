@@ -16,3 +16,12 @@ triangle = [
     [ 4,62,98,27,23, 9,70,98,73,93,38,53,60, 4,23]
 ]
 
+prev_row = triangle[-1]
+rows = list(reversed(triangle[:-1]))
+
+for row in rows:
+    for idx, val in enumerate(row):
+        row[idx] = val + max(prev_row[idx], prev_row[idx+1])
+    prev_row = row
+
+print(rows[-1])
